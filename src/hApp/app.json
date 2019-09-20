@@ -1,0 +1,16 @@
+{
+  "name": "HoloGeos",
+  "description": "",
+  "authors": [
+    {
+      "indentifier": "Ludovic Désert <reversed.k@gmail.com>",
+      "public_key_source": "",
+      "signature": ""
+    }
+  ],
+  "version": "0.0.1",
+  "started" : "2019/06/25",
+  "last updated" : "2019/06/25",
+  "dht": {},
+  "properties": null
+}

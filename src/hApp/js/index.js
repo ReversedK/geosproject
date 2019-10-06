@@ -5,8 +5,8 @@ var bodyParser = require('body-parser');
 const HoloGeos = require("./libs/HoloGeos.js");
 
 const hAppConfig = {
-    instance_name: "test-instance",
-    conductor_endpoint: 'http://localhost:8888'
+    instance_name: "HoloGeos",
+    conductor_endpoint: 'http://localhost:4000'
 }
 
 var Geos;

@@ -14,7 +14,7 @@ var Geos;
 async function init(){
  Geos = new HoloGeos()
  await Geos.setup(hAppConfig);
- 
+
 }
 init();
 // Create application/x-www-form-urlencoded parser
@@ -22,7 +22,7 @@ app.use(bodyParser.json({ extended: false }));
 var server = app.listen(8081, function () {
 
    var host = server.address().address
-   var port = server.address().port   
+   var port = server.address().port
    console.log("HoloGeos app listening at http://%s:%s", host, port)
 })
 
@@ -39,8 +39,8 @@ app.post('/findbycoords', async function (req, res) {
 
 
 async function main() {
-    let Geos = new HoloGeos();
-    await Geos.setup();
+   let Geos = new HoloGeos();
+    await Geos.setup(hAppConfig);
     setTimeout(async () => {
         await Geos.addAService({
             "name": "context1",

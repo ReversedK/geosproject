@@ -32,15 +32,15 @@ class HoloGeos {
     }
     /***
      *  geohash : {geohash,precision}
-     * 
+     *
      */
     async addAService(contextualizedService, geohash) {
         // create service
         var service = await this.ContextualizedService.add(contextualizedService);
         // create geohashes and link them
         for (var prec = this.config.min_precision; prec <= geohash.precision; prec++) {
-            let geoHashAtPrecision = geohash.geohash.substring(0,prec); 
-           
+            let geoHashAtPrecision = geohash.geohash.substring(0,prec);
+
             var geoElement = await this.GeoHashElement.add({
                 "geohash": geoHashAtPrecision,
                 "precision": prec
@@ -56,7 +56,7 @@ class HoloGeos {
 
     async find(geohash, tags = [], context = {}) {
     	if(typeof geohash == "string") geohash = [geohash];
-    	
+
         // get GeoElement
         var gh = await this.GeoHashElement.find({
             "and": {

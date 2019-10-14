@@ -3,19 +3,20 @@ const HoloJs = require("./holojs.js");
 var geohash = require('ngeohash');
 
 
-
 /**
  * ContextualizedService {service, context, tags}
  */
 class HoloGeos {
     constructor() {
-        this.entities = ["GeoHashElement", "ContextualizedService"];
+        this.entities = [
+          {name : "GeoHashElement", addr : "QmdQyv4kQ74dUeyLKpLP96DZMzEH7VaCqC5oNyFyfqmsCY"},
+           {name:"ContextualizedService",addr:"QmPBA3A8fiJxocHsXwJCRQgqBSKUgfLMYTQfnvNMzfRKvR"}];
         this.config = {"min_precision": 5};
     }
     async setup(hAppConfig) {
-        return await this.entities.forEach(async (entity) => {
-            this[entity] = new HoloJs(entity, hAppConfig)
-            return await this[entity].setup();
+        return this.entities.forEach(async (entity) => {
+            this[entity.name] = new HoloJs(entity, hAppConfig)
+            return await this[entity.name].setup();
         })
     }
 
@@ -34,6 +35,7 @@ class HoloGeos {
      *  geohash : {geohash,precision}
      *
      */
+
     async addAService(contextualizedService, geohash) {
         // create service
         var service = await this.ContextualizedService.add(contextualizedService);

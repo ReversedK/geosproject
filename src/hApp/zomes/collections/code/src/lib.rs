@@ -63,7 +63,7 @@ define_zome! {
             links: [
                 to!(
                     "HoloJsEntry",
-                    link_type: "items",
+                    link_type: "related_items",
                     validation_package: || hdk::ValidationPackageDefinition::Entry,
                     validation: |_validation_data: hdk::LinkValidationData| {
                         Ok(())
@@ -173,12 +173,12 @@ struct GetCollectionResponse {
 /******************************************** */
 
 fn handle_link_bidir(item_a: Address, item_b: Address,link_tag_ab:String,link_tag_ba:String) -> ZomeApiResult<bool> {
-        hdk::utils::link_entries_bidir(&item_a, &item_b, "items","items", &link_tag_ab, &link_tag_ba)?;
+        hdk::utils::link_entries_bidir(&item_a, &item_b, "related_items","related_items", &link_tag_ab, &link_tag_ba)?;
         Ok(true)
 }
 
 fn handle_link_items(item_address:Address,linkto_address:Address,link_tag:String)->ZomeApiResult<Address>{
-    let addr = hdk::api::link_entries( &item_address,&linkto_address, "items",&link_tag)?;
+    let addr = hdk::api::link_entries( &item_address,&linkto_address, "related_items",&link_tag)?;
 	Ok(addr)
 }
 
@@ -188,7 +188,7 @@ fn handle_delete_item(item_address: Address) -> ZomeApiResult<bool> {
 }
 
 fn handle_unlink_items(target:Address,base_item:Address,link_tag:String)-> ZomeApiResult<bool>{
-  hdk::remove_link(&base_item,&target,"items",&link_tag)?;
+  hdk::remove_link(&base_item,&target,"related_items",&link_tag)?;
   Ok(true)
 }
 
@@ -256,7 +256,7 @@ fn handle_get_linked_items(item_addr: Address,link_tag: String,search:JsonString
     hdk::utils::get_as_type::<HoloJsEntry>(item_addr.clone())?;
 
     // try and load the  items linked to base_item, filter out errors and collect in a vector
-    let holojs_items = hdk::get_links(&item_addr, LinkMatch::Exactly("items"),LinkMatch::Exactly(&link_tag))?.addresses()
+    let holojs_items = hdk::get_links(&item_addr, LinkMatch::Exactly("related_items"),LinkMatch::Exactly(&link_tag))?.addresses()
         .iter()
         .map(|item_address|-> ZomeApiResult<GetHoloJsEntry>  {
            let the_entry = hdk::utils::get_as_type::<HoloJsEntry>(item_address.to_owned())?;

@@ -1,14 +1,21 @@
 
 const xhr = require('superagent');
+import  connect  from '@holochain/hc-web-client';
+
+
 
 class HoloJs {
-    constructor(collection_name,config) {
-      this.collection_name = collection_name;
+    constructor(collection,config) {
+      this.collection_name = collection.name;
+      this.collection_addr = collection.addr;
       this.instance_name = config.instance_name;
       this.conductor_endpoint = config.conductor_endpoint;
     }
     async setup() {
-      this.collection_addr = await this.create_collection(this.collection_name);
+      console.log('setting up collection '+this.collection_name);
+      //this.collection_addr = await this.create_collection(this.collection_name);
+      console.log('done setting up collection '+this.collection_name+': #',this.collection_addr);
+        return true;
   }
     preparePayload(zome,fn,payload_obj) {
        return {
@@ -24,7 +31,30 @@ class HoloJs {
         }
     }
 
+
     async callHoloInstance(zome,fn,payload,callback=false) {
+      connect().then(({callZome, close}) => {
+          callZome(this.instance_name, zome ,fn)(payload).then((r)=>console.log(r))
+})
+        let response;
+        payload = this.preparePayload(zome,fn,payload);
+
+        if(typeof callback == 'function')
+            xhr.post(this.conductor_endpoint).set('Content-Type', 'application/json').set('accept', 'json')
+            .send(payload)
+            .end((err, res) => {
+             callback(err,res.body);
+        }); else {
+            response = await xhr.post(this.conductor_endpoint).set('Content-Type', 'application/json').set('accept', 'json').send(payload);
+
+            try {
+              console.log(fn,payload,response.body.result);
+            return JSON.parse(response.body.result).Ok
+            } catch(e) { console.log(e); console.log(response.body);return e;}
+        }
+    }
+
+    async callHoloInstancexx(zome,fn,payload,callback=false) {
     //  console.log("*******************",this)
         let response;
         payload = this.preparePayload(zome,fn,payload);
@@ -38,7 +68,7 @@ class HoloJs {
             response = await xhr.post(this.conductor_endpoint).set('Content-Type', 'application/json').set('accept', 'json').send(payload);
 
             try {
-            //  console.log(fn,payload,response.body.result);
+              console.log(fn,payload,response.body.result);
             return JSON.parse(response.body.result).Ok
             } catch(e) { console.log(e); console.log(response.body);return e;}
         }
@@ -48,6 +78,7 @@ class HoloJs {
     /* CRUD methods & some more...*/
     /*************************** */
     async add(item2add) {
+      console.log('adding item to collection '+this.collection_name+' #',this.collection_addr);
         item2add.entity_type = this.collection_name;
         item2add = {  entity_type: item2add.entity_type, item: JSON.stringify(item2add) }
         let payload = { item: item2add, base_addr: this.collection_addr };

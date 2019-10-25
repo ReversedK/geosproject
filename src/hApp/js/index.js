@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 
+
 const HoloGeos = require("./libs/HoloGeos.js");
 
 const hAppConfig = {
@@ -55,7 +56,11 @@ async function main() {
             "precision": 12
         });
     }, 1000);
+<<<<<<< HEAD
   /* setTimeout(async () => {
+=======
+  /*  setTimeout(async () => {
+>>>>>>> 661b077971913c2df869c41b181d1ffb9bed8b82
         let r = await Geos.findByCoords({lat:10,lon:10}, ["tag"]);
                console.log("-----------------------------");
         console.log(r);

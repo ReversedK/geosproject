@@ -1,6 +1,11 @@
 
 const xhr = require('superagent');
+<<<<<<< HEAD
 const { connect } = require('@holochain/hc-web-client');
+=======
+import  connect  from '@holochain/hc-web-client';
+
+>>>>>>> 661b077971913c2df869c41b181d1ffb9bed8b82
 
 
 class HoloJs {
@@ -31,6 +36,7 @@ class HoloJs {
     }
 
 
+<<<<<<< HEAD
     async callHoloInstancexx(zome,fn,payload,callback=false) {
       let response;
         console.log("CALLING : ",fn,payload);
@@ -58,7 +64,31 @@ class HoloJs {
       });
     }
 
+=======
+>>>>>>> 661b077971913c2df869c41b181d1ffb9bed8b82
     async callHoloInstance(zome,fn,payload,callback=false) {
+      connect().then(({callZome, close}) => {
+          callZome(this.instance_name, zome ,fn)(payload).then((r)=>console.log(r))
+})
+        let response;
+        payload = this.preparePayload(zome,fn,payload);
+
+        if(typeof callback == 'function')
+            xhr.post(this.conductor_endpoint).set('Content-Type', 'application/json').set('accept', 'json')
+            .send(payload)
+            .end((err, res) => {
+             callback(err,res.body);
+        }); else {
+            response = await xhr.post(this.conductor_endpoint).set('Content-Type', 'application/json').set('accept', 'json').send(payload);
+
+            try {
+              console.log(fn,payload,response.body.result);
+            return JSON.parse(response.body.result).Ok
+            } catch(e) { console.log(e); console.log(response.body);return e;}
+        }
+    }
+
+    async callHoloInstancexx(zome,fn,payload,callback=false) {
     //  console.log("*******************",this)
         let response;
         payload = this.preparePayload(zome,fn,payload);
@@ -86,8 +116,12 @@ class HoloJs {
         item2add.entity_type = this.collection_name;
         item2add = {  entity_type: item2add.entity_type, item: JSON.stringify(item2add) }
         let payload = { item: item2add, base_addr: this.collection_addr };
+<<<<<<< HEAD
         let r = await this.callHoloInstance('collections', 'add_item',payload);
         return r;
+=======
+        return await this.callHoloInstance('collections', 'add_item',payload);
+>>>>>>> 661b077971913c2df869c41b181d1ffb9bed8b82
     };
 
     async update(new_item,item_addr) {

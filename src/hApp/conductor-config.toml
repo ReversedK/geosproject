@@ -1,49 +1,53 @@
 bridges = []
-persistence_dir = ''
-ui_bundles = []
-ui_interfaces = []
+
 
 [[agents]]
-id = 'hc-run-agent'
-keystore_file = 'testAgent'
-name = 'testAgent'
-public_address = 'HcScjN8wBwrn3tuyg89aab3a69xsIgdzmX5P9537BqQZ5A7TEZu7qCY4Xzzjhma'
-test_agent = true
+id = "Geos"
+name = "HoloTesterOne"
+public_address = "HcSCjrze6W6ITpzau65aeAYbAiN5ogbmnF9O6Kx8NUWPjfqwfz5v4OuoZfnvihi"
+keystore_file = "/home/holo/.config/holochain/keys/HcSCjrze6W6ITpzau65aeAYbAiN5ogbmnF9O6Kx8NUWPjfqwfz5v4OuoZfnvihi"
 
 [[dnas]]
-file = '/home/holo/projects/geosproject/src/hApp/dist/hApp.dna.json'
-hash = 'Qmajv3ZNJESrgwW8p2gXeW3uWck6i4d9nwznUDH1nvE2Ze'
-id = 'hc-run-dna'
+id = "HoloGeosDNA"
+file = "/home/holo/projects/geosproject/src/hApp/dist/hApp.dna.json"
+hash = "QmeQUS7nFpfTYf41deETWvB98jfuqbaquUuhWgTqNajwMJ"
 
 [[instances]]
-agent = 'hc-run-agent'
-dna = 'hc-run-dna'
-id = 'test-instance'
-
-[instances.storage]
-type = 'memory'
+id = "GeosInstance1"
+agent = "Geos"
+dna = "HoloGeosDNA"
+    [instances.storage]
+    type = "file"
+    path = "/home/holo/.config/holochain/storage"
 
 [[interfaces]]
 admin = true
-id = 'websocket-interface'
+id = "websocket interface"
+    [interfaces.driver]
+    port = 3000
+    type = "websocket"
 
-[[interfaces.instances]]
-id = 'test-instance'
-
-[interfaces.driver]
-port = 8888
-type = 'http'
+[[interfaces]]
+admin = true
+id = "http interface"
+    [[interfaces.instances]]
+    id = "GeosInstance1"
+    [interfaces.driver]
+    port = 4000
+    type = "http"
 
 [logger]
-state_dump = true
-type = 'debug'
+type = "debug"
+    [[logger.rules.rules]]
+    color = "red"
+    exclude = false
+    pattern = "^err/"
 
-[logger.rules]
-rules = []
+    [[logger.rules.rules]]
+    color = "white"
+    exclude = false
+    pattern = "^debug/dna"
 
-[passphrase_service]
-type = 'cmd'
-
-[signals]
-consistency = false
-trace = false
+    [[logger.rules.rules]]
+    exclude = false
+    pattern = ".*"

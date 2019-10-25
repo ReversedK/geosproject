@@ -12,7 +12,7 @@ test_agent = true
 
 [[dnas]]
 file = '/home/holo/projects/geosproject/src/hApp/dist/hApp.dna.json'
-hash = 'QmeQUS7nFpfTYf41deETWvB98jfuqbaquUuhWgTqNajwMJ'
+hash = 'Qmajv3ZNJESrgwW8p2gXeW3uWck6i4d9nwznUDH1nvE2Ze'
 id = 'hc-run-dna'
 
 [[instances]]

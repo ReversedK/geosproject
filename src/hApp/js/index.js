@@ -1,3 +1,4 @@
+
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -5,7 +6,9 @@ var bodyParser = require('body-parser');
 const HoloGeos = require("./libs/HoloGeos.js");
 
 const hAppConfig = {
-    instance_name: "HoloGeos",
+/*  instance_name: "test-instance",
+  conductor_endpoint: 'http://localhost:8888'*/
+    instance_name: "GeosInstance1",
     conductor_endpoint: 'http://localhost:4000'
 }
 
@@ -16,7 +19,7 @@ async function init(){
  await Geos.setup(hAppConfig);
 
 }
-init();
+
 // Create application/x-www-form-urlencoded parser
 app.use(bodyParser.json({ extended: false }));
 var server = app.listen(8081, function () {
@@ -39,8 +42,10 @@ app.post('/findbycoords', async function (req, res) {
 
 
 async function main() {
-   let Geos = new HoloGeos();
+  console.log("testing...");
+    Geos = new HoloGeos();
     await Geos.setup(hAppConfig);
+    console.log("Geos setup done...",Geos.ContextualizedService.collection_addr);
     setTimeout(async () => {
         await Geos.addAService({
             "name": "context1",
@@ -50,7 +55,7 @@ async function main() {
             "precision": 12
         });
     }, 1000);
-    setTimeout(async () => {
+  /* setTimeout(async () => {
         let r = await Geos.findByCoords({lat:10,lon:10}, ["tag"]);
                console.log("-----------------------------");
         console.log(r);
@@ -62,7 +67,8 @@ async function main() {
          console.log("-----------------------------");
         console.log(r);
          console.log("-----------------------------");
-    }, 3000);
+    }, 3000);*/
 }
 
+init();
 //main();
